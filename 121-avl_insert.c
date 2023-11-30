@@ -1,12 +1,13 @@
 #include "binary_trees.h"
 
 /**
- * r_insert_node - node value instertion in a AVL.
- * @tree: type **pointer of root node of the AVL tree struct.
- * @parent: parent node of struct AVL.
- * @new: type**pointer left or right insertion.
- * @nval: insertion value of the AVL.
- * Return: pointer to the new root after insertion otherwise NULL
+ * r_insert_node - Inserts a node in an AVL tree.
+ * @tree: Double pointer to the root node of the AVL tree.
+ * @parent: Pointer to the parent node.
+ * @new: Double pointer for the new node insertion.
+ * @nval: The value to be inserted.
+ *
+ * Return: Pointer to the new root node after insertion, or NULL on failure.
  */
 avl_t *r_insert_node(avl_t **tree, avl_t *parent, avl_t **new, int nval)
 {
@@ -27,23 +28,18 @@ avl_t *r_insert_node(avl_t **tree, avl_t *parent, avl_t **new, int nval)
 			return (NULL);
 	}
 	else
-	{
 		return (*tree);
-	}
+
 	bval = binary_tree_balance(*tree);
 	if (bval > 1 && (*tree)->left->n > nval)
-	{
 		*tree = binary_tree_rotate_right(*tree);
-	}
 	else if (bval > 1 && (*tree)->left->n < nval)
 	{
 		(*tree)->left = binary_tree_rotate_left((*tree)->left);
 		*tree = binary_tree_rotate_right(*tree);
 	}
 	else if (bval < -1 && (*tree)->right->n < nval)
-	{
 		*tree = binary_tree_rotate_left(*tree);
-	}
 	else if (bval < -1 && (*tree)->right->n > nval)
 	{
 		(*tree)->right = binary_tree_rotate_right((*tree)->right);
@@ -51,11 +47,13 @@ avl_t *r_insert_node(avl_t **tree, avl_t *parent, avl_t **new, int nval)
 	}
 	return (*tree);
 }
+
 /**
- * avl_insert - inserts a value into an AVL tree.
- * @tree: type **pointer to the root node of the AVL tree to insert into.
- * @value: value to store in the node to be inserted
- * Return: inserted node, or NULL if fails.
+ * avl_insert - Inserts a value into an AVL tree.
+ * @tree: Double pointer to the root node of the AVL tree to insert into.
+ * @value: The value to store in the node to be inserted.
+ *
+ * Return: Pointer to the inserted node, or NULL on failure.
  */
 avl_t *avl_insert(avl_t **tree, int value)
 {
@@ -66,6 +64,5 @@ avl_t *avl_insert(avl_t **tree, int value)
 		*tree = binary_tree_node(NULL, value);
 		return (*tree);
 	}
-	r_insert_node(tree, *tree, &new, value);
-	return (new);
+	return (r_insert_node(tree, *tree, &new, value));
 }
