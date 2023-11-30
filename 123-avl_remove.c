@@ -1,51 +1,58 @@
 #include "binary_trees.h"
 
 /**
- * balance_avl - Balances an AVL tree
- * @tree: Pointer to the root node of the AVL tree
+ * bal - Measures balance factor of a AVL
+ * @tree: tree to go through
+ * Return: balanced factor
  */
-void balance_avl(avl_t **tree)
+void bal(avl_t **tree)
 {
-	int balance_factor;
+	int bval;
 
-	if (!tree || !*tree)
+	if (tree == NULL || *tree == NULL)
 		return;
-	if (!(*tree)->left && !(*tree)->right)
+	if ((*tree)->left == NULL && (*tree)->right == NULL)
 		return;
-	balance_avl(&(*tree)->left);
-	balance_avl(&(*tree)->right);
-	balance_factor = binary_tree_balance((const binary_tree_t *)*tree);
-	if (balance_factor > 1)
+	bal(&(*tree)->left);
+	bal(&(*tree)->right);
+	bval = binary_tree_balance((const binary_tree_t *)*tree);
+	if (bval > 1)
 		*tree = binary_tree_rotate_right((binary_tree_t *)*tree);
-	else if (balance_factor < -1)
+	else if (bval < -1)
 		*tree = binary_tree_rotate_left((binary_tree_t *)*tree);
 }
-
 /**
- * find_successor - Finds the in-order successor of a node
- * @node: Pointer to the node
- * Return: Value of the successor
+ * successor - get the next successor i mean the min node in the right subtree
+ * @node: tree to check
+ * Return: the min value of this tree
  */
-int find_successor(bst_t *node)
+int successor(bst_t *node)
 {
-	int left_val;
+	int left = 0;
 
-	if (!node)
+	if (node == NULL)
+	{
 		return (0);
-	left_val = find_successor(node->left);
-	if (left_val == 0)
-		return (node->n);
-	return (left_val);
-}
+	}
+	else
+	{
+		left = successor(node->left);
+		if (left == 0)
+		{
+			return (node->n);
+		}
+		return (left);
+	}
 
+}
 /**
- * remove_node - Removes a node and adjusts the tree accordingly
- * @root: Node to remove
- * Return: Adjusted value if children exist, 0 otherwise
+ *remove_type - function that removes a node depending of its children
+ *@root: node to remove
+ *Return: 0 if it has no children or other value if it has
  */
-int remove_node(bst_t *root)
+int remove_type(bst_t *root)
 {
-	int successor_val;
+	int new_value = 0;
 
 	if (!root->left && !root->right)
 	{
@@ -56,7 +63,7 @@ int remove_node(bst_t *root)
 		free(root);
 		return (0);
 	}
-	if ((!root->left && root->right) || (root->right && !root->left))
+	else if ((!root->left && root->right) || (!root->right && root->left))
 	{
 		if (!root->left)
 		{
@@ -77,48 +84,52 @@ int remove_node(bst_t *root)
 		free(root);
 		return (0);
 	}
-	successor_val = find_successor(root->right);
-	root->n = successor_val;
-	return (successor_val);
+	else
+	{
+		new_value = successor(root->right);
+		root->n = new_value;
+		return (new_value);
+	}
 }
-
 /**
- * bst_remove - Removes a node from a BST tree
- * @root: Root of the tree
- * @value: Value of the node to remove
- * Return: Pointer to the root node after removal
+ * bst_remove - remove a node from a BST tree
+ * @root: root of the tree
+ * @value: node with this value to remove
+ * Return: the tree changed
  */
 bst_t *bst_remove(bst_t *root, int value)
 {
-	int node_type;
+	int type = 0;
 
-	if (!root)
+	if (root == NULL)
 		return (NULL);
 	if (value < root->n)
 		bst_remove(root->left, value);
 	else if (value > root->n)
 		bst_remove(root->right, value);
-	else
+	else if (value == root->n)
 	{
-		node_type = remove_node(root);
-		if (node_type != 0)
-			bst_remove(root->right, node_type);
+		type = remove_type(root);
+		if (type != 0)
+			bst_remove(root->right, type);
 	}
+	else
+		return (NULL);
 	return (root);
 }
 
 /**
- * avl_remove - Removes a node from an AVL tree
- * @root: Root of the tree
- * @value: Value of the node to remove
- * Return: Pointer to the root node after removal
+ * avl_remove - remove a node from a AVL tree
+ * @root: root of the tree
+ * @value: node with this value to remove
+ * Return: the tree changed
  */
 avl_t *avl_remove(avl_t *root, int value)
 {
-	avl_t *avl_root = (avl_t *)bst_remove((bst_t *)root, value);
+	avl_t *root_a = (avl_t *) bst_remove((bst_t *) root, value);
 
-	if (!avl_root)
+	if (root_a == NULL)
 		return (NULL);
-	balance_avl(&avl_root);
-	return (avl_root);
+	bal(&root_a);
+	return (root_a);
 }
