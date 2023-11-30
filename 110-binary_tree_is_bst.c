@@ -1,35 +1,36 @@
 #include "binary_trees.h"
-#include "limits.h"
+#include <limits.h>
 
 /**
- * is_bst_helper - Checks if a binary tree is a valid binary search tree.
- * @tree: A pointer to the root node of the tree to check.
- * @lo: The value of the smallest node visited thus far.
- * @hi: The value of the largest node visited this far.
+ * validate_bst - Recursively verifies if a segment of a binary tree adheres to
+ *                the properties of a binary search tree.
+ * @tree: Pointer to the node currently being checked.
+ * @lo: Lower boundary for the current subtree's node values.
+ * @hi: Upper boundary for the current subtree's node values.
  *
- * Return: If the tree is a valid BST, 1, otherwise, 0.
+ * Return: 1 if the subtree rooted at 'tree' is a valid BST, otherwise 0.
  */
-int is_bst_helper(const binary_tree_t *tree, int lo, int hi)
+int validate_bst(const binary_tree_t *tree, int lo, int hi)
 {
 	if (tree != NULL)
 	{
 		if (tree->n < lo || tree->n > hi)
 			return (0);
-		return (is_bst_helper(tree->left, lo, tree->n - 1) &&
-			is_bst_helper(tree->right, tree->n + 1, hi));
+		return (validate_bst(tree->left, lo, tree->n - 1) &&
+				validate_bst(tree->right, tree->n + 1, hi));
 	}
 	return (1);
 }
 
 /**
- * binary_tree_is_bst - Checks if a binary tree is a valid binary search tree.
- * @tree: A pointer to the root node of the tree to check.
+ * binary_tree_is_bst - Checks if an entire binary tree is a valid BST.
+ * @tree: Pointer to the root node of the tree.
  *
- * Return: 1 if tree is a valid BST, and 0 otherwise
+ * Return: 1 if the binary tree is a valid BST, otherwise 0.
  */
 int binary_tree_is_bst(const binary_tree_t *tree)
 {
 	if (tree == NULL)
 		return (0);
-	return (is_bst_helper(tree, INT_MIN, INT_MAX));
+	return (validate_bst(tree, INT_MIN, INT_MAX));
 }
