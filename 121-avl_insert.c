@@ -1,12 +1,12 @@
 #include "binary_trees.h"
 
 /**
- * Recursive AVL Node Insertion - Implements insertion logic in an AVL Tree.
+ * r_insert_node - Inserts a value into a node of an AVL tree.
  * @tree: Double pointer to the root node of the AVL tree.
- * @parent: Reference to the parent node in the AVL tree structure.
- * @new: Double pointer to determine the position of new insertion.
+ * @parent: Pointer to the parent node of the current node.
+ * @new: Double pointer for insertion on left or right.
  * @nval: Value to be inserted in the AVL tree.
- * Return: Updated root node after insertion, or NULL on failure.
+ * Return: Pointer to new root after insertion or NULL on failure.
  */
 avl_t *r_insert_node(avl_t **tree, avl_t *parent, avl_t **new, int nval)
 {
@@ -53,10 +53,10 @@ avl_t *r_insert_node(avl_t **tree, avl_t *parent, avl_t **new, int nval)
 }
 
 /**
- * AVL Tree Value Insertion - Inserts a new value into an AVL tree.
- * @tree: Double pointer to the root node of the target AVL tree.
- * @value: Value to be stored in the newly inserted node.
- * Return: Pointer to the newly inserted node, or NULL on failure.
+ * avl_insert - Adds a new value to an AVL tree.
+ * @tree: Double pointer to the root of the AVL tree.
+ * @value: The value to be stored in the new node.
+ * Return: Pointer to the inserted node, or NULL on failure.
  */
 avl_t *avl_insert(avl_t **tree, int value)
 {
