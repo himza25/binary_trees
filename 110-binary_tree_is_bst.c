@@ -1,28 +1,15 @@
 #include "binary_trees.h"
 #include <limits.h>
 
-int is_bst_util(const binary_tree_t *tree, long min, long max);
-
 /**
- * binary_tree_is_bst - Checks if a binary tree is a valid Binary Search Tree
- * @tree: Pointer to the root node of the tree to check
- *
- * Return: 1 if tree is a valid BST, and 0 otherwise
- */
-int binary_tree_is_bst(const binary_tree_t *tree)
-{
-	return (is_bst_util(tree, LONG_MIN, LONG_MAX));
-}
-
-/**
- * is_bst_util - Utility function to check BST validity
+ * validate_bst - Recursively checks if a binary tree is a valid BST
  * @tree: Pointer to the current node
- * @min: Minimum allowed value
- * @max: Maximum allowed value
+ * @min: Minimum valid value
+ * @max: Maximum valid value
  *
- * Return: 1 if valid BST, 0 otherwise
+ * Return: 1 if tree segment is a valid BST, 0 otherwise
  */
-int is_bst_util(const binary_tree_t *tree, long min, long max)
+int validate_bst(const binary_tree_t *tree, long min, long max)
 {
 	if (!tree)
 		return (1);
@@ -30,6 +17,17 @@ int is_bst_util(const binary_tree_t *tree, long min, long max)
 	if ((long)tree->n <= min || (long)tree->n >= max)
 		return (0);
 
-	return (is_bst_util(tree->left, min, (long)tree->n) &&
-			is_bst_util(tree->right, (long)tree->n + 1, max));
+	return (validate_bst(tree->left, min, (long)tree->n - 1) &&
+			validate_bst(tree->right, (long)tree->n + 1, max));
+}
+
+/**
+ * binary_tree_is_bst - Determines if a binary tree is a valid BST
+ * @tree: Pointer to the root node of the tree
+ *
+ * Return: 1 if the entire tree is a valid BST, 0 otherwise
+ */
+int binary_tree_is_bst(const binary_tree_t *tree)
+{
+	return (validate_bst(tree, LONG_MIN, LONG_MAX));
 }
