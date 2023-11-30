@@ -1,7 +1,7 @@
 #include "binary_trees.h"
 #include <limits.h>
 
-int is_bst_util(const binary_tree_t *tree, int min, int max);
+int is_bst_util(const binary_tree_t *tree, long min, long max);
 
 /**
  * binary_tree_is_bst - Checks if a binary tree is a valid Binary Search Tree
@@ -11,7 +11,7 @@ int is_bst_util(const binary_tree_t *tree, int min, int max);
  */
 int binary_tree_is_bst(const binary_tree_t *tree)
 {
-	return (is_bst_util(tree, INT_MIN, INT_MAX));
+	return (is_bst_util(tree, LONG_MIN, LONG_MAX));
 }
 
 /**
@@ -22,14 +22,14 @@ int binary_tree_is_bst(const binary_tree_t *tree)
  *
  * Return: 1 if valid BST, 0 otherwise
  */
-int is_bst_util(const binary_tree_t *tree, int min, int max)
+int is_bst_util(const binary_tree_t *tree, long min, long max)
 {
 	if (!tree)
 		return (1);
 
-	if (tree->n <= min || tree->n >= max)
+	if ((long)tree->n <= min || (long)tree->n >= max)
 		return (0);
 
-	return (is_bst_util(tree->left, min, tree->n) &&
-			is_bst_util(tree->right, tree->n, max));
+	return (is_bst_util(tree->left, min, (long)tree->n) &&
+			is_bst_util(tree->right, (long)tree->n + 1, max));
 }
