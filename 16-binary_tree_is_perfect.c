@@ -8,13 +8,13 @@
  */
 size_t depth(const binary_tree_t *node)
 {
-    size_t d = 0;
-    while (node != NULL)
-    {
-        d++;
-        node = node->left;
-    }
-    return d;
+	size_t d = 0;
+	while (node != NULL)
+	{
+		d++;
+		node = node->left;
+	}
+	return d;
 }
 
 /**
@@ -27,17 +27,17 @@ size_t depth(const binary_tree_t *node)
  */
 int is_perfect_rec(const binary_tree_t *tree, size_t d, size_t level)
 {
-    if (tree == NULL)
-        return 1;
+	if (tree == NULL)
+		return 1;
 
-    if (tree->left == NULL && tree->right == NULL)
-        return (d == level + 1);
+	if (tree->left == NULL && tree->right == NULL)
+		return (d == level + 1);
 
-    if (tree->left == NULL || tree->right == NULL)
-        return 0;
+	if (tree->left == NULL || tree->right == NULL)
+		return 0;
 
-    return is_perfect_rec(tree->left, d, level + 1) &&
-           is_perfect_rec(tree->right, d, level + 1);
+	return is_perfect_rec(tree->left, d, level + 1) &&
+		   is_perfect_rec(tree->right, d, level + 1);
 }
 
 /**
@@ -48,11 +48,11 @@ int is_perfect_rec(const binary_tree_t *tree, size_t d, size_t level)
  */
 int binary_tree_is_perfect(const binary_tree_t *tree)
 {
-    size_t d;
+	size_t d;
 
-    if (tree == NULL)
-        return (0);
+	if (tree == NULL)
+		return (0);
 
-    d = depth(tree);
-    return is_perfect_rec(tree, d, 0);
+	d = depth(tree);
+	return is_perfect_rec(tree, d, 0);
 }
