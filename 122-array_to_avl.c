@@ -5,7 +5,7 @@
  * @array: Pointer to the first element of the array
  * @size: Number of elements in the array
  *
- * Return: Pointer to the root of the created AVL tree, or NULL if failure occurs
+ * Return: Pointer to the root of the created AVL tree, or NULL if failure
  */
 avl_t *array_to_avl(int *array, size_t size)
 {
@@ -20,5 +20,5 @@ avl_t *array_to_avl(int *array, size_t size)
 		}
 	}
 
-	return root_node;
+	return (root_node);
 }
