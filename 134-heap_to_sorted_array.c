@@ -26,13 +26,14 @@ int *heap_to_sorted_array(heap_t *heap, size_t *size)
 	if (!heap || !size)
 		return (NULL);
 
-	*size = tree_size(heap);
+	*size = tree_size(heap) + 1;
 
 	a = malloc(sizeof(int) * (*size));
+
 	if (!a)
 		return (NULL);
 
-	for (i = 0; heap && i < *size; i++)
+	for (i = 0; heap; i++)
 		a[i] = heap_extract(&heap);
 
 	return (a);
