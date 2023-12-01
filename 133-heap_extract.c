@@ -24,6 +24,28 @@ size_t tree_height(const heap_t *tree)
 		return (height_l);
 	return (height_r);
 }
+/**
+ * tree_size_h - measures the sum of heights of a binary tree
+ * @tree: pointer to the root node of the tree to measure the height
+ *
+ * Return: Height or 0 if tree is NULL
+ */
+size_t tree_size_h(const binary_tree_t *tree)
+{
+	size_t height_l = 0;
+	size_t height_r = 0;
+
+	if (!tree)
+		return (0);
+
+	if (tree->left)
+		height_l = 1 + tree_size_h(tree->left);
+
+	if (tree->right)
+		height_r = 1 + tree_size_h(tree->right);
+
+	return (height_l + height_r);
+}
 
 /**
  * _preorder - goes through a binary tree using pre-order traversal
@@ -44,35 +66,6 @@ void _preorder(heap_t *tree, heap_t **node, size_t height)
 
 	_preorder(tree->left, node, height);
 	_preorder(tree->right, node, height);
-}
-
-/**
- * get_parent - Finds the parent node for a ceratin node
- * @root: Pointer to heap's node
- * @index: Index of the current node
- * @pind: Index been searched
- *
- * Return: Pointer to heap's node
- */
-heap_t *get_parent(heap_t *root, int index, int pind)
-{
-	heap_t *left = NULL, *right = NULL;
-
-	if (!root || index > pind)
-		return (NULL);
-
-	if (index == pind)
-		return (root);
-
-	left = get_parent(root->left, index * 2 + 1, pind);
-	if (left)
-		return (left);
-
-	right = get_parent(root->right, index * 2 + 2, pind);
-	if (right)
-		return (right);
-
-	return (NULL);
 }
 
 /**
@@ -112,41 +105,37 @@ void heapify(heap_t *root)
 }
 
 /**
- * heap_extract - Extracts the root node from a Max Binary Heap
- * @root: Double pointer to the root node of the heap
- * Return: Value stored in the root node
+ * heap_extract - extracts the root node of a Max Binary Heap
+ * @root: a double pointer to the root node of heap
+ *
+ * Return: the value stored in the root node
+ *         0 on failure
  */
 int heap_extract(heap_t **root)
 {
-	int value, nodes, pind = 0;
-	heap_t *parent, *node;
+	int value;
+	heap_t *heap_r, *node;
 
 	if (!root || !*root)
 		return (0);
-
-	value = (*root)->n;
-	nodes = count_heap_nodes(*root);
-
-	if (nodes == 1)
+	heap_r = *root;
+	value = heap_r->n;
+	if (!heap_r->left && !heap_r->right)
 	{
-		free(*root);
 		*root = NULL;
+		free(heap_r);
 		return (value);
 	}
 
-	pind = (nodes - 2) / 2;
-	parent = get_parent(*root, 0, pind);
+	_preorder(heap_r, &node, tree_height(heap_r));
 
-	_preorder(*root, &node, tree_height(*root));
-
-	(*root)->n = node->n;
+	heap_r->n = node->n;
 	if (node->parent->right)
 		node->parent->right = NULL;
 	else
 		node->parent->left = NULL;
 	free(node);
-
-	heapify(*root);
-
+	heapify(heap_r);
+	*root = heap_r;
 	return (value);
 }
