@@ -1,13 +1,14 @@
 #include "binary_trees.h"
 
 /**
- * tree_height - Calculates the height of a binary tree.
+ * tree_height - Calculates the height of a binary tree recursively.
  * @tree: Pointer to the root node of the tree.
- * Return: Height of the tree, 0 if tree is NULL.
+ * Return: The maximum height from the root, or 0 if tree is NULL.
  */
 size_t tree_height(const heap_t *tree)
 {
-	size_t height_l = 0, height_r = 0;
+	size_t height_l = 0;
+	size_t height_r = 0;
 
 	if (!tree)
 		return (0);
@@ -19,9 +20,9 @@ size_t tree_height(const heap_t *tree)
 }
 
 /**
- * tree_size_h - Calculates the total height of a binary tree.
+ * tree_size_h - Computes the total sum of the heights of a binary tree.
  * @tree: Pointer to the root node of the tree.
- * Return: Total height, 0 if tree is NULL.
+ * Return: The sum of heights from the root, or 0 if tree is NULL.
  */
 size_t tree_size_h(const binary_tree_t *tree)
 {
@@ -32,9 +33,9 @@ size_t tree_size_h(const binary_tree_t *tree)
 }
 
 /**
- * _preorder - Traverses a binary tree in pre-order.
+ * _preorder - Performs a pre-order traversal of a binary tree.
  * @tree: Pointer to the root node of the tree.
- * @node: Pointer to be updated to the last node in traversal.
+ * @node: Pointer updated to the last node in the traversal.
  * @height: Height of the tree.
  */
 void _preorder(heap_t *tree, heap_t **node, size_t height)
@@ -52,8 +53,8 @@ void _preorder(heap_t *tree, heap_t **node, size_t height)
 }
 
 /**
- * heapify - Restores the Max Heap property in a binary heap.
- * @root: Pointer to the root of the binary heap.
+ * heapify - Ensures the Max Heap property is maintained in the heap.
+ * @root: Pointer to the root of the heap.
  */
 void heapify(heap_t *root)
 {
@@ -63,7 +64,7 @@ void heapify(heap_t *root)
 	while (root && root->left)
 	{
 		tmp2 = (!root->right || root->left->n > root->right->n) ?
-				root->left : root->right;
+		       root->left : root->right;
 
 		if (root->n >= tmp2->n)
 			break;
@@ -76,9 +77,9 @@ void heapify(heap_t *root)
 }
 
 /**
- * heap_extract - Extracts the root node from a Max Binary Heap.
+ * heap_extract - Extracts and returns the root node's value Max Binary Heap.
  * @root: Double pointer to the root node of the heap.
- * Return: Value stored in the root node, 0 on failure.
+ * Return: Value stored in the root node, or 0 on failure.
  */
 int heap_extract(heap_t **root)
 {
